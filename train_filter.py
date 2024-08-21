@@ -229,6 +229,7 @@ def train_filter(examples_per_class: int,
             break
 
     # Safe the logs
+    os.makedirs("logs", exist_ok=True)
     log_path = f"logs/train_filter_{seed}_{epoch + 1}x{iterations_per_epoch}.csv"
     pd.DataFrame.from_records(records).to_csv(log_path)
 
