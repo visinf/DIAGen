@@ -12,7 +12,7 @@ import warnings
 import matplotlib.pyplot as plt
 import csv
 
-COCO_EXTENSION_DIR = r"/data/vilab05/CustomDatasets/Common_Objects"  # put ur own path here
+COCO_EXTENSION_DIR = r"./custom_coco/"  # put ur own path here
 
 
 class COCOExtension(FewShotDataset):
