@@ -28,7 +28,7 @@ Custom datasets can be evaluated by implementing subclasses of `semantic_aug/few
 
 ## Setting Up CustomCOCO dataset
 
-The images of CustomCOCO dataset are part of this repo and located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/)
+The images of CustomCOCO dataset is part of this repo and located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/)
 
 ## Setting Up FOCUS
 
