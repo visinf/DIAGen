@@ -346,7 +346,7 @@ if __name__ == "__main__":
 
     train_filter(examples_per_class=8,
                  seed=0,
-                 dataset="road_sign",
+                 dataset="focus",
                  image_size=256,
                  iterations_per_epoch=200,
                  max_epochs=50,
