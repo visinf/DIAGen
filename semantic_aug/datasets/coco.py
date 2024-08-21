@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 from pycocotools.coco import COCO
 from PIL import Image
 from collections import defaultdict
-from .image_dictionary import manually_selected_imgs
 
 COCO_DIR = r"/data/vilab06/coco2017"  # put ur own path here
 
