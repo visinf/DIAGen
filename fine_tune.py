@@ -16,10 +16,7 @@ import torch.utils.checkpoint
 from torch.utils.data import Dataset
 
 from semantic_aug.datasets.coco import COCODataset
-from semantic_aug.datasets.spurge import SpurgeDataset
-from semantic_aug.datasets.imagenet import ImageNetDataset
-from semantic_aug.datasets.pascal import PASCALDataset
-from semantic_aug.datasets.road_sign import RoadSignDataset
+#from semantic_aug.datasets.road_sign import RoadSignDataset
 from semantic_aug.datasets.coco_extension import COCOExtension
 from semantic_aug.datasets.focus import FOCUS
 
@@ -44,11 +41,8 @@ from tqdm.auto import tqdm
 from transformers import CLIPTextModel, CLIPTokenizer
 
 DATASETS = {
-    "spurge": SpurgeDataset,
     "coco": COCODataset,
-    "pascal": PASCALDataset,
-    "imagenet": ImageNetDataset,
-    "road_sign": RoadSignDataset,
+    #"road_sign": RoadSignDataset,
     "coco_extension": COCOExtension,
     "focus": FOCUS,
 }
@@ -266,7 +260,7 @@ def parse_args():
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
 
     parser.add_argument("--dataset", type=str, default="coco",
-                        choices=["spurge", "imagenet", "coco", "pascal", "road_sign", "coco_extension", "focus"])
+                        choices=["coco", "coco_extension", "focus"])  # "road_sign"
 
     parser.add_argument("--unet-ckpt", type=str, default=None)
 

@@ -1,18 +1,11 @@
 from semantic_aug.datasets.coco import COCODataset
-from semantic_aug.datasets.spurge import SpurgeDataset
-from semantic_aug.datasets.imagenet import ImageNetDataset
-from semantic_aug.datasets.pascal import PASCALDataset
-from semantic_aug.datasets.road_sign import RoadSignDataset
+#from semantic_aug.datasets.road_sign import RoadSignDataset
 from semantic_aug.datasets.coco_extension import COCOExtension
 from semantic_aug.datasets.focus import FOCUS
-from semantic_aug.datasets.caltech101 import CalTech101Dataset
-from semantic_aug.datasets.flowers102 import Flowers102Dataset
 from semantic_aug.augmentations.compose import ComposeParallel
 from semantic_aug.augmentations.compose import ComposeSequential
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
-from semantic_aug.augmentations.textual_inversion_upstream \
-    import TextualInversion as MultiTokenTextualInversion
 from semantic_aug.few_shot_dataset import DEFAULT_PROMPT_PATH, DEFAULT_PROMPT
 from torchvision.models import resnet50, ResNet50_Weights
 from torch.utils.data import DataLoader, WeightedRandomSampler
@@ -48,13 +41,8 @@ DEFAULT_EMBED_PATH = "tokens/{dataset}-tokens/{dataset}-{seed}-{examples_per_cla
 DEFAULT_NOISE_EMBED_PATH = "tokens/{dataset}-tokens/noise/{dataset}-{seed}-{examples_per_class}.pt"
 
 DATASETS = {
-    "spurge": SpurgeDataset,
     "coco": COCODataset,
-    "pascal": PASCALDataset,
-    "imagenet": ImageNetDataset,
-    "caltech": CalTech101Dataset,
-    "flowers": Flowers102Dataset,
-    "road_sign": RoadSignDataset,
+    #"road_sign": RoadSignDataset,
     "coco_extension": COCOExtension,
     "focus": FOCUS,
 }
@@ -67,13 +55,12 @@ COMPOSERS = {
 AUGMENTATIONS = {
     "real-guidance": RealGuidance,
     "textual-inversion": TextualInversion,
-    "multi-token-inversion": MultiTokenTextualInversion
 }
 
 
 def run_experiment(examples_per_class: int = 0,
                    seed: int = 0,
-                   dataset: str = "spurge",
+                   dataset: str = "focus",
                    num_synthetic: int = 100,
                    iterations_per_epoch: int = 200,
                    num_epochs: int = 50,
@@ -531,7 +518,6 @@ if __name__ == "__main__":
 
     parser.add_argument("--num-synthetic", type=int, default=10)
     # Define how many synthetic images should be generated per class
-    # Total number of synthetic images: num-synthetic * examples-per-class * 80
 
     parser.add_argument("--seeds", nargs='+', type=int, default=[0, 1, 2])
     # Define how often the entire experiment should be run with different seeds
@@ -541,20 +527,16 @@ if __name__ == "__main__":
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[2, 4, 8])
     # Define how many different images per class from the train data are used as guiding image
     # in the image generating process
-    # Total number of synthetic images: num-synthetic * examples-per-class * 80
 
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     # Path to the trained embeddings of the pseudo words
 
     parser.add_argument("--dataset", type=str, default="coco_extension",
-                        choices=["spurge", "imagenet", "coco", "pascal", "flowers", "caltech", "road_sign",
-                                 "coco_extension", "focus"])
-    # Select which dataset to use (we only use coco)
+                        choices=["coco", "coco_extension", "focus"])  # "road_sign"
 
     parser.add_argument("--aug", nargs="+", type=str, default=["textual-inversion"],
                         choices=["real-guidance", "textual-inversion",
                                  "multi-token-inversion"])
-    # Select which augmentation strategy to use (we only use textual-inversion or multi-token-inversion?)
 
     parser.add_argument("--strength", nargs="+", type=float, default=None)
     # A StableDiffusionImg2ImgPipeline and StableDiffusionInpaintPipeline Parameter:

@@ -1,12 +1,7 @@
 from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.coco_extension import COCOExtension
 from semantic_aug.datasets.focus import FOCUS
-from semantic_aug.datasets.spurge import SpurgeDataset
-from semantic_aug.datasets.imagenet import ImageNetDataset
-from semantic_aug.datasets.pascal import PASCALDataset
-from semantic_aug.datasets.road_sign import RoadSignDataset
-from semantic_aug.datasets.caltech101 import CalTech101Dataset
-from semantic_aug.datasets.flowers102 import Flowers102Dataset
+#from semantic_aug.datasets.road_sign import RoadSignDataset
 from models.filter_model import ClassificationFilterModel
 from torch.utils.data import DataLoader, WeightedRandomSampler
 
@@ -20,14 +15,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 DATASETS = {
-    "spurge": SpurgeDataset,
     "coco": COCODataset,
     "coco_extension": COCOExtension,
-    "pascal": PASCALDataset,
-    "imagenet": ImageNetDataset,
-    "caltech": CalTech101Dataset,
-    "flowers": Flowers102Dataset,
-    "road_sign": RoadSignDataset,
+    #"road_sign": RoadSignDataset,
     "focus": FOCUS,
 }
 
