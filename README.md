@@ -41,13 +41,12 @@ git clone git@github.com:Tobi-Tob/CustomDatasets.git
 ```
 
 `COCO_EXTENSION_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/coco_extension.py#L15) should be updated to point to the location of `CustomDatasets/CommonObjects` on your system.
-`ROAD_SIGN_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/road_sign.py#L15) should be updated to point to the location of `CustomDatasets/Road_Signs` on your system.
 
 ## Setting Up FOCUS
 
 An explanation on how to download the FOCUS dataset ([original repo](https://github.com/priyathamkat/focus.git)) can be found [here](https://umd.app.box.com/s/w7tvxer0wur7vtsoqcemfopgshn6zklv). After downloading and unzipping, execute our `semantic_aug/datasets/focus_create_split.py` to extract all the images into the needed directory structure and create a train, val and test split.
 
-After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. `FOCUS_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/focus.py#L15) should be updated to point to the location of `focus` on your system.
+After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. `FOCUS_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/focus.py#L19) should be updated to point to the location of `focus` on your system.
 
 ## Setting Up MSCOCO
 
