@@ -9,19 +9,18 @@ Our code builds upon [DA-Fusion](https://github.com/brandontrabucco/da-fusion).
 
 ## Installation (DIAGen)
 
-To install the package, first create a `conda` environment.
-
-```bash
-conda create -n da-fusion python=3.7 pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.6 -c pytorch
-conda activate diagen
-pip install diffusers["torch"] transformers pycocotools pandas matplotlib seaborn scipy
-```
-
-Then download and install the source code.
+To set up the repository, first clone the GitHub Repository.
 
 ```bash
 git clone git@github.com:visinf/DIAGen.git
-pip install -e diagen
+cd DIAGen
+```
+
+Then create the `conda` environment from the .yml File:
+
+```bash
+conda env create -f environment.yml
+conda activate diagen
 ```
 
 ## Datasets
