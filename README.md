@@ -31,15 +31,7 @@ Custom datasets can be evaluated by implementing subclasses of `semantic_aug/few
 
 ## Setting Up CustomCOCO dataset
 
-The images of CustomCOCO dataset are located in the GitHub repo [Custom Datasets](https://github.com/Tobi-Tob/CustomDatasets.git) by Tobi-Tob and colleagues.
-
-To access the images download them.
-
-```bash
-git clone git@github.com:Tobi-Tob/CustomDatasets.git
-```
-
-`COCO_EXTENSION_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/coco_extension.py#L15) should be updated to point to the location of `CustomDatasets/CommonObjects` on your system.
+The images of CustomCOCO dataset are part of this repo and located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/)
 
 ## Setting Up FOCUS
 
@@ -49,7 +41,7 @@ After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. `FOCU
 
 ## Setting Up MSCOCO
 
-To setup MSCOCO, first download the [2017 Training Images](http://images.cocodataset.org/zips/train2017.zip), the [2017 Validation Images](http://images.cocodataset.org/zips/val2017.zip), and the [2017 Train/Val Annotations](http://images.cocodataset.org/annotations/annotations_trainval2017.zip). These files should be unzipped into the following directory structure.
+To set up MSCOCO, first download the [2017 Training Images](http://images.cocodataset.org/zips/train2017.zip), the [2017 Validation Images](http://images.cocodataset.org/zips/val2017.zip), and the [2017 Train/Val Annotations](http://images.cocodataset.org/annotations/annotations_trainval2017.zip). These files should be unzipped into the following directory structure.
 
 ```
 coco2017/
