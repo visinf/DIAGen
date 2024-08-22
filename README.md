@@ -26,17 +26,17 @@ We benchmark DIAGen on multiple few-shot image classification problems, includin
 
 Custom datasets can be evaluated by implementing subclasses of `semantic_aug/few_shot_dataset.py`.
 
-## Setting Up CustomCOCO dataset
+### Setting Up CustomCOCO dataset
 
-The images of CustomCOCO dataset is part of this repo and located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/)
+The images of CustomCOCO dataset are part of this repo and located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/)
 
-## Setting Up FOCUS
+### Setting Up FOCUS
 
 An explanation on how to download the FOCUS dataset ([original repo](https://github.com/priyathamkat/focus.git)) can be found [here](https://umd.app.box.com/s/w7tvxer0wur7vtsoqcemfopgshn6zklv). After downloading and unzipping, execute our `semantic_aug/datasets/focus_create_split.py` to extract all the images into the needed directory structure and create a train, val and test split.
 
 After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. `FOCUS_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/focus.py#L19) should be updated to point to the location of `focus` on your system.
 
-## Setting Up MSCOCO
+### Setting Up MSCOCO
 
 To set up MSCOCO, first download the [2017 Training Images](http://images.cocodataset.org/zips/train2017.zip), the [2017 Validation Images](http://images.cocodataset.org/zips/val2017.zip), and the [2017 Train/Val Annotations](http://images.cocodataset.org/annotations/annotations_trainval2017.zip). These files should be unzipped into the following directory structure.
 
@@ -51,32 +51,29 @@ coco2017/
 
 ## Pipeline
 
-The DIAGen pipeline consists of two major components. In the first step textual inversion (https://arxiv.org/abs/2208.01618) is used to extract class representations in the embedding space of Stable Diffusion. In order to do this the `fine_tune.py` needs to be performed.
+The DIAGen pipeline consists of the following steps:
 
-Before going to the next component the fine-tuned vectors need to be aggregated to class embeddings. This is done by performing `aggregate_embeddings.py`. In this step, our first contribution can be used by the parameter `--augment-embeddings`. It works as described in the paper.
+1. In the first step, textual inversion (https://arxiv.org/abs/2208.01618) is used to learn representations of all classes in the dataset as new pseudo words. To do this, `fine_tune.py` needs to be executed.
+An example call could look like this: xxxxx
 
-In the second component, DIAGen generates the synthetic data. For our second contribution, the class-specific text-prompts used by Stable Diffusion, the `generate_prompts.py` script needs to be executed. If you want to generate the text-prompts via a GPT model, it is necessary to add an api key in a .env file [here in the project directory](https://github.com/visinf/DIAGen).
+2. Intermediate processing step. Running `aggregate_embeddings.py` will save all learned embeddings as a tokens.pt file. In this step we can also introduce our first contribution noise as described in the paper (section Embedding Noise), controlled by the parameters `--augment-embeddings` and `--std-deviation`.
+An example call could look like this: xxxxx
 
-To use our third contribution, the weighting mechanism for the synthetic images, execute `train_filter.py`.
+3. For our second contribution, the class-specific text-prompts (section LLM Prompting), the `generate_prompts.py` script needs to be executed. If you want to generate the text-prompts via the GPT 4 model, it is necessary to add an api key in a .env file [here in the project directory](https://github.com/visinf/DIAGen).
+An example call could look like this: xxxxx
 
-The actual image generation process is combined with the training of the downstream classifier in `train_classifier.py`. This script accepts a number of arguments that control how the classifier is trained:
+4. The actual image generation process is combined with the training of the downstream classifier in `train_classifier.py`. Our third contribution, the weighting mechanism for the synthetic images (section Weighting Mechanism), can be controlled by the parameter `--synthetic_filter` which executes the code in `train_filter.py`.
 
-```bash
-python train_classifier.py --dataset "focus" --examples-per-class 4 \
---strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 \
---use-generated-prompts 1 --prompt-path "prompts/focus/prompts_gpt4.csv" \
---synthetic_filter "train" --method "noise_llm_filter" --eval_on_test_set "test" \
---num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
-```
+An example call could look like this: 
+python train_classifier.py --dataset "focus" --examples-per-class 4 --strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 --use-generated-prompts 1 --prompt-path "prompts/focus/prompts_gpt4.csv" --synthetic_filter "train" --method "noise_llm_filter" --eval_on_test_set "test" --num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
 
 This example will train a classifier on the FOCUS task, with 4 images per class, using the prompts located at `prompts/focus/prompts_gpt4.csv`. Slurm scripts that reproduce the paper are located in `scripts/textual_inversion`. Results are logged to `.csv` files based on the script argument `--logdir`. More detailed explanation of each argument can be found in the code
 
 ## Citation
 
-If you find our method helpful, consider citing our preprint!
+If you find our method helpful, consider citing our paper!
 
 ```
 OUR CITATION
-TODO
 ```
 
