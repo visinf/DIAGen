@@ -53,19 +53,37 @@ coco2017/
 
 The DIAGen pipeline consists of the following steps:
 
-1. In the first step, textual inversion (https://arxiv.org/abs/2208.01618) is used to learn representations of all classes in the dataset as new pseudo words. To do this, `fine_tune.py` needs to be executed.
-An example call could look like this: xxxxx
+### 1. fine_tune.py
+In the first step, textual inversion (https://arxiv.org/abs/2208.01618) is used to learn representations of all classes in the dataset as new pseudo words. To do this, `fine_tune.py` needs to be executed.
 
-2. Intermediate processing step. Running `aggregate_embeddings.py` will save all learned embeddings as a tokens.pt file. In this step we can also introduce our first contribution noise as described in the paper (section Embedding Noise), controlled by the parameters `--augment-embeddings` and `--std-deviation`.
-An example call could look like this: xxxxx
+An example call could look like this:
+```
+TODO
+```
 
-3. For our second contribution, the class-specific text-prompts (section LLM Prompting), the `generate_prompts.py` script needs to be executed. If you want to generate the text-prompts via the GPT 4 model, it is necessary to add an api key in a .env file [here in the project directory](https://github.com/visinf/DIAGen).
-An example call could look like this: xxxxx
+### 2. aggregate_embeddings.py
+Intermediate processing step. Running `aggregate_embeddings.py` will save all learned embeddings as a tokens.pt file. In this step we can also introduce our first contribution noise as described in the paper (section Embedding Noise), controlled by the parameters `--augment-embeddings` and `--std-deviation`.
 
-4. The actual image generation process is combined with the training of the downstream classifier in `train_classifier.py`. Our third contribution, the weighting mechanism for the synthetic images (section Weighting Mechanism), can be controlled by the parameter `--synthetic_filter` which executes the code in `train_filter.py`.
+An example call could look like this:
+```
+TODO
+```
 
-An example call could look like this: 
+### 3. generate_prompts.py
+For our second contribution, the class-specific text-prompts (section LLM Prompting), the `generate_prompts.py` script needs to be executed. If you want to generate the text-prompts via the GPT 4 model, it is necessary to add an api key in a .env file [here in the project directory](https://github.com/visinf/DIAGen).
+
+An example call could look like this:
+```
+TODO
+```
+
+### 4. train_classifier.py
+The actual image generation process is combined with the training of the downstream classifier in `train_classifier.py`. Our third contribution, the weighting mechanism for the synthetic images (section Weighting Mechanism), can be controlled by the parameter `--synthetic_filter` which executes the code in `train_filter.py`.
+
+An example call could look like this:
+```
 python train_classifier.py --dataset "focus" --examples-per-class 4 --strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 --use-generated-prompts 1 --prompt-path "prompts/focus/prompts_gpt4.csv" --synthetic_filter "train" --method "noise_llm_filter" --eval_on_test_set "test" --num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
+```
 
 This example will train a classifier on the FOCUS task, with 4 images per class, using the prompts located at `prompts/focus/prompts_gpt4.csv`. Slurm scripts that reproduce the paper are located in `scripts/textual_inversion`. Results are logged to `.csv` files based on the script argument `--logdir`. More detailed explanation of each argument can be found in the code
 
