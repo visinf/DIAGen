@@ -22,7 +22,7 @@ conda activate diagen
 
 ## Datasets
 
-We benchmark DIAGen on multiple few-shot image classification problems, including the MSCOCO, FOCUS and CustomCOCO dataset (the latter) contains handmade images of 23 MSCOCO classes). For the MSCOCO, we label images with the classes corresponding to the largest object in the image. As you see in the `semantic_aug/datasets/` directory, there are more datasets available.
+We benchmark DIAGen on multiple few-shot image classification problems, including the MSCOCO, FOCUS and CustomCOCO dataset (the latter contains handmade images of 23 MSCOCO classes).
 
 Custom datasets can be evaluated by implementing subclasses of `semantic_aug/few_shot_dataset.py`.
 
@@ -47,7 +47,7 @@ coco2017/
     annotations/
 ```
 
-`COCO_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/coco.py#L17) should be updated to point to the location of `coco2017` on your system.
+`COCO_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/coco.py#L17) should be updated to point to the location of `coco2017` on your system. As the dataset itself is not designed for single label classification, we label images with the classes corresponding to the largest object in the image.
 
 ## Pipeline
 
