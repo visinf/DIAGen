@@ -2,41 +2,36 @@
 
 ![DIAGen Banner](assets/banner.png)
 
-Simple data augmentation techniques, such as rotations and flips, are widely used to enhance the generalization power of computer vision models. However, these techniques often fail to modify high-level semantic attributes of a class. To address this limitation, researchers have explored generative augmentation methods like the recently proposed [DA-Fusion](https://arxiv.org/abs/2302.07944). Despite some progress, the variations are still largely limited to textural changes, thus falling short on aspects like varied viewpoints, environment, weather conditions, or even class-level semantic attributes (e.g., variations in a dog’s breed). To overcome this challenge, we propose DIAGen, building upon DA-Fusion. First, we apply Gaussian noise to the embeddings of an object learned with Textual Inversion to diversify generations using a pre-trained diffusion model’s knowledge. Second, we exploit the general knowledge of a text-to-text generative model to guide the image generation of the diffusion model with varied class-specific prompts. Finally, We introduce a weighting mechanism to mitigate the impact of poorly generated samples. Experimental results across various datasets show that DIAGen not only enhances semantic diversity but also improves the performance of subsequent classifiers. The advantages of DIAGen over standard augmentations and the DA-Fusion baseline are particularly pronounced with out-of-distribution samples.
+## Abstract
+Simple data augmentation techniques, such as rotations and flips, are widely used to enhance the generalization power of computer vision models. However, these techniques often fail to modify high-level semantic attributes of a class. To address this limitation, researchers have explored generative augmentation methods like the recently proposed [DA-Fusion](https://github.com/brandontrabucco/da-fusion). Despite some progress, the variations are still largely limited to textural changes, thus falling short on aspects like varied viewpoints, environment, weather conditions, or even class-level semantic attributes (e.g., variations in a dog’s breed). To overcome this challenge, we propose DIAGen, building upon DA-Fusion. First, we apply Gaussian noise to the embeddings of an object learned with Textual Inversion to diversify generations using a pre-trained diffusion model’s knowledge. Second, we exploit the general knowledge of a text-to-text generative model to guide the image generation of the diffusion model with varied class-specific prompts. Finally, We introduce a weighting mechanism to mitigate the impact of poorly generated samples. Experimental results across various datasets show that DIAGen not only enhances semantic diversity but also improves the performance of subsequent classifiers. The advantages of DIAGen over standard augmentations and the DA-Fusion baseline are particularly pronounced with out-of-distribution samples.
 
-## Installation (DIAGen)
+## Installation
 
-To set up the repository, first clone the GitHub Repository.
-
+To set up DIAGen, clone the repository:
 ```bash
 git clone git@github.com:visinf/DIAGen.git
 cd DIAGen
 ```
 
-Then create the `conda` environment from the .yml File:
-
+Then set up the conda environment from the `environment.yml` file:
 ```bash
 conda env create -f environment.yml
 conda activate diagen
 ```
 
 ## Datasets
+DIAGen is benchmarked on various few-shot image classification datasets, including MS COCO, FOCUS, and our Custom COCO dataset, which includes handmade images for 23 MS COCO classes.
+Own datasets can be evaluated by implementing subclasses of `semantic_aug/few_shot_dataset.py`.
 
-We benchmark DIAGen on multiple few-shot image classification problems, including the MSCOCO, FOCUS and CustomCOCO dataset (the latter contains handmade images of 23 MSCOCO classes).
-
-Custom datasets can be evaluated by implementing subclasses of `semantic_aug/few_shot_dataset.py`.
-
-### Setting Up CustomCOCO dataset
-
-The images of CustomCOCO dataset are part of this repo and located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/)
+### Setting Up Custom COCO
+The Custom COCO dataset images are included in this repository and can be found [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/).
 
 ### Setting Up FOCUS
-
 An explanation on how to download the FOCUS dataset ([original repo](https://github.com/priyathamkat/focus.git)) can be found [here](https://umd.app.box.com/s/w7tvxer0wur7vtsoqcemfopgshn6zklv). After downloading and unzipping, execute our `semantic_aug/datasets/focus_create_split.py` to extract all the images into the needed directory structure and create a train, val and test split.
 
-After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. `FOCUS_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/focus.py#L19) should be updated to point to the location of `focus` on your system.
+After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. Update the `FOCUS_DIR` variable located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/focus.py#L19) to point to your local focus dataset directory.
 
-### Setting Up MSCOCO
+### Setting Up MS COCO
 
 To set up MSCOCO, first download the [2017 Training Images](http://images.cocodataset.org/zips/train2017.zip), the [2017 Validation Images](http://images.cocodataset.org/zips/val2017.zip), and the [2017 Train/Val Annotations](http://images.cocodataset.org/annotations/annotations_trainval2017.zip). These files should be unzipped into the following directory structure.
 
@@ -46,8 +41,9 @@ coco2017/
     val2017/
     annotations/
 ```
+Update the `COCO_DIR` variable located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/coco.py#L17) to point to your local coco2017 directory.
 
-`COCO_DIR` located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/coco.py#L17) should be updated to point to the location of `coco2017` on your system. As the dataset itself is not designed for single label classification, we label images with the classes corresponding to the largest object in the image.
+Note: Since MS COCO is not inherently designed for single-label classification, images are labeled according to the class of the largest object in the image.
 
 ## Pipeline
 
