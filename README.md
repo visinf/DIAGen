@@ -23,15 +23,15 @@ conda activate diagen
 DIAGen is benchmarked on various few-shot image classification datasets, including MS COCO, FOCUS, and our Custom COCO dataset, which includes handmade images for 23 MS COCO classes.
 Own datasets can be evaluated by implementing subclasses of `semantic_aug/few_shot_dataset.py`.
 
-### Setting Up Custom COCO
+### 1. Setting Up Custom COCO
 The Custom COCO dataset images are included in this repository and can be found [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/custom_coco/).
 
-### Setting Up FOCUS
+### 2. Setting Up FOCUS
 An explanation on how to download the FOCUS dataset ([original repo](https://github.com/priyathamkat/focus.git)) can be found [here](https://umd.app.box.com/s/w7tvxer0wur7vtsoqcemfopgshn6zklv). After downloading and unzipping, execute our `semantic_aug/datasets/focus_create_split.py` to extract all the images into the needed directory structure and create a train, val and test split.
 
 After that the FOCUS task is usable from `semantic_aug/datasets/focus.py`. Update the `FOCUS_DIR` variable located [here](https://github.com/visinf/DIAGen/blob/main/semantic_aug/datasets/focus.py#L19) to point to your local focus dataset directory.
 
-### Setting Up MS COCO
+### 3. Setting Up MS COCO
 
 To set up MSCOCO, first download the [2017 Training Images](http://images.cocodataset.org/zips/train2017.zip), the [2017 Validation Images](http://images.cocodataset.org/zips/val2017.zip), and the [2017 Train/Val Annotations](http://images.cocodataset.org/annotations/annotations_trainval2017.zip). These files should be unzipped into the following directory structure.
 
@@ -45,49 +45,47 @@ Update the `COCO_DIR` variable located [here](https://github.com/visinf/DIAGen/b
 
 Note: Since MS COCO is not inherently designed for single-label classification, images are labeled according to the class of the largest object in the image.
 
-## Pipeline
+## DIAGen Pipeline
 
 ![DIAGen Pipeline](assets/diagen_pipeline.png)
 
-The DIAGen pipeline consists of the following steps:
+The source code for the DIAGen pipeline is split into the following steps:
 
-### 1. fine_tune.py
-In the first step, textual inversion (https://arxiv.org/abs/2208.01618) is used to learn representations of all classes in the dataset as new pseudo words. To do this, `fine_tune.py` needs to be executed.
+### 1. Textual Inversion (`fine_tune.py`)
+In the first step, [Textual Inversion](https://arxiv.org/abs/2208.01618) is used to learn representations of all classes in the dataset as new pseudo words. To do this, `fine_tune.py` needs to be executed.
 
 An example call could look like this:
 ```
 python fine_tune.py --dataset="custom_coco" --output_dir=./ --pretrained_model_name_or_path="CompVis/stable-diffusion-v1-4" --resolution=512 --train_batch_size=4 --lr_warmup_steps=0 --gradient_accumulation_steps=1 --max_train_steps=1000 --learning_rate=5.0e-04 --scale_lr --lr_scheduler="constant" --mixed_precision=fp16 --revision=fp16 --gradient_checkpointing --only_save_embeds --flip_p 0.5 --seeds 0 --examples-per-class 2 --device 0       
 ```
 
-### 2. aggregate_embeddings.py
-Intermediate processing step. Running `aggregate_embeddings.py` will save all learned embeddings as a tokens.pt file. In this step we also introduce our first contribution (a) embedding noise as described in the paper, controlled by the parameters `--augment-embeddings` and `--std-deviation`.
+### 2. Intermediate Processing (`aggregate_embeddings.py`)
+Executing `aggregate_embeddings.py` will save all learned embeddings as a tokens.pt file. In this step we also introduce our first contribution <ins>(a) embedding noise</ins>, controlled by the parameters `--augment-embeddings` and `--std-deviation`.
 
 An example call could look like this:
 ```
 python aggregate_embeddings.py --seeds 0 --examples-per-class 2 --dataset "custom_coco" --augment-embeddings True --input-path "./fine-tuned" --embed-path "tokens/{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt"
 ```
 
-### 3. generate_prompts.py
-For our second contribution (b) class-specific text-prompts, the `generate_prompts.py` script needs to be executed. If you want to generate the text-prompts via the GPT 4 model, it is necessary to add an api key in a .env file [here in the project directory](https://github.com/visinf/DIAGen).
+### 3. Generating Semantically Diverse Prompts (`generate_prompts.py`)
+For our second contribution <ins>(b) class-specific prompts</ins>, the `generate_prompts.py` script needs to be executed. If you want to generate the text-prompts via the GPT 4 model, it is necessary to add an api key in a .env file [here in the project directory](https://github.com/visinf/DIAGen).
 
 An example call could look like this:
 ```
 python generate_prompts.py --dataset "custom_coco" --model "meta-llama/Llama-2-7b-chat-hf" --prompts-per-class 5
 ```
 
-### 4. train_classifier.py
-The actual image generation process is combined with the training of the downstream classifier in `train_classifier.py`. Our third contribution (c) weighting mechanism for the synthetic images, can be controlled by the parameter `--synthetic_filter` which executes the code in `train_filter.py`.
+### 4. Image Generation and Train Downstream Model (`train_classifier.py`)
+The actual image generation process is combined with the training of the downstream classifier in `train_classifier.py`. Our third contribution <ins>(c) weighting mechanism</ins> for the synthetic images, can be controlled by the parameter `--synthetic_filter` which executes the code in `train_filter.py`.
 
 An example call could look like this:
 ```
 python train_classifier.py --dataset "custom_coco" --examples-per-class 2 --strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 --use-generated-prompts 1 --prompt-path "prompts/focus/prompts_gpt4.csv" --synthetic_filter "train" --method "noise_llm_filter" --eval_on_test_set "test" --num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
 ```
 
-This example will train a classifier on the Custom COCO dataset, with 2 images per class, using the prompts located at `prompts/focus/prompts_gpt4.csv`. Slurm scripts that reproduce the paper are located in `scripts/textual_inversion`. Results are logged to `.csv` files based on the script argument `--logdir`. More detailed explanation of each argument can be found in the code
-
 ## Citation
 
-If you find our method helpful, consider citing our paper!
+If you find DIAGen helpful, please consider citing our work:
 
 ```
 OUR CITATION
