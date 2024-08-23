@@ -52,6 +52,8 @@ coco2017/
 
 ## Pipeline
 
+![DIAGen Pipeline](assets/diagen_pipeline.png)
+
 The DIAGen pipeline consists of the following steps:
 
 ### 1. fine_tune.py
