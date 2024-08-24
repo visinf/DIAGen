@@ -12,17 +12,18 @@ import warnings
 import matplotlib.pyplot as plt
 import csv
 
-COCO_EXTENSION_DIR = r"./custom_coco/"  # put ur own path here
+base_dir = os.path.dirname(os.path.abspath(__file__))  # Directory of the current script
+CUSTOM_COCO_DIR = os.path.join(base_dir, 'custom_coco')  # plus relative location to dataset
 
 
-class COCOExtension(FewShotDataset):
+class CustomCOCO(FewShotDataset):
     classes = ["bench", "bicycle", "book", "bottle", "bowl", "car", "cell_phone", "chair", "clock", "computer_mouse",
                "cup", "fork", "keyboard", "knife", "laptop", "motorcycle", "spoon", "potted_plant", "sports_ball",
                "tie", "traffic_light", "tv_remote", "wine_glass"]
     class_names = sorted(classes)
     num_classes: int = len(class_names)
 
-    def __init__(self, *args, data_dir: str = COCO_EXTENSION_DIR,
+    def __init__(self, *args, data_dir: str = CUSTOM_COCO_DIR,
                  split: str = "train", seed: int = 0,
                  examples_per_class: int = None,
                  generative_aug: GenerativeAugmentation = None,
@@ -33,7 +34,7 @@ class COCOExtension(FewShotDataset):
                  use_manual_list: bool = False,  # Not used
                  **kwargs):
 
-        super(COCOExtension, self).__init__(
+        super(CustomCOCO, self).__init__(
             *args, examples_per_class=examples_per_class,
             synthetic_probability=synthetic_probability,
             generative_aug=generative_aug, **kwargs)
@@ -55,7 +56,6 @@ class COCOExtension(FewShotDataset):
             self.image_paths[class_name].extend(class_image_paths)
 
         rng = np.random.default_rng(seed)
-
         # Generate random permutations of indices
         class_ids = {class_name: rng.permutation(len(self.image_paths[class_name]))
                      for class_name in self.class_names}
@@ -115,7 +115,7 @@ class COCOExtension(FewShotDataset):
 
         # Writing image paths of training data to CSV
         out_dir_1 = "source_images"
-        out_dir = "source_images/coco_extension"
+        out_dir = "source_images/custom_coco"
         if not os.path.exists(out_dir_1):
             os.makedirs(out_dir_1)
             if not os.path.exists(out_dir):
@@ -132,7 +132,7 @@ class COCOExtension(FewShotDataset):
                 row = [paths]
                 writer.writerow(row)
 
-        print(f"Wrote images paths of coco_extension {split}-split to csv: {out_path}")
+        print(f"Wrote images paths of custom_coco {split}-split to csv: {out_path}")
 
         if use_randaugment:
             train_transform = transforms.Compose([
@@ -198,7 +198,7 @@ class COCOExtension(FewShotDataset):
 
 
 if __name__ == "__main__":
-    dataset = COCOExtension(split="test", examples_per_class=4, seed=2)
+    dataset = CustomCOCO(split="test", examples_per_class=4, seed=2)
     print('Dataset class counts:', dataset.class_counts)
     idx = 0
     dataset.visualize_by_idx(idx)

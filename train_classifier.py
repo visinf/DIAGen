@@ -1,6 +1,5 @@
 from semantic_aug.datasets.coco import COCODataset
-#from semantic_aug.datasets.road_sign import RoadSignDataset
-from semantic_aug.datasets.coco_extension import COCOExtension
+from semantic_aug.datasets.custom_coco import CustomCOCO
 from semantic_aug.datasets.focus import FOCUS
 from semantic_aug.augmentations.compose import ComposeParallel
 from semantic_aug.augmentations.compose import ComposeSequential
@@ -42,8 +41,7 @@ DEFAULT_NOISE_EMBED_PATH = "tokens/{dataset}-tokens/noise/{dataset}-{seed}-{exam
 
 DATASETS = {
     "coco": COCODataset,
-    #"road_sign": RoadSignDataset,
-    "coco_extension": COCOExtension,
+    "custom_coco": CustomCOCO,
     "focus": FOCUS,
 }
 
@@ -477,7 +475,7 @@ if __name__ == "__main__":
     and synthetic data.
 
     Example call in terminal:
-    python train_classifier.py --dataset "coco_extension" --synthetic-dir "intermediates/coco_ext_test/synthetic_class_concepts" --logdir "intermediates/coco_ext_test/logs" --iterations-per-epoch 200 --num-epochs 50 --batch-size 32 --num-synthetic 5 --num-trials 1 --examples-per-class 8 --embed-path "intermediates/coco_ext_test/coco_extension-tokens/coco_extension-0-2.pt" --aug "textual-inversion" --strength 0.5 --guidance-scale 7.5 --mask 0 --inverted 0 --use-generated-prompts 0
+    python train_classifier.py --dataset "custom_coco" --synthetic-dir "intermediates/coco_ext_test/synthetic_class_concepts" --logdir "intermediates/coco_ext_test/logs" --iterations-per-epoch 200 --num-epochs 50 --batch-size 32 --num-synthetic 5 --num-trials 1 --examples-per-class 8 --embed-path "intermediates/coco_ext_test/custom_coco-tokens/custom_coco-0-2.pt" --aug "textual-inversion" --strength 0.5 --guidance-scale 7.5 --mask 0 --inverted 0 --use-generated-prompts 0
     '''
 
     parser = argparse.ArgumentParser("Few-Shot Baseline")
@@ -531,8 +529,8 @@ if __name__ == "__main__":
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     # Path to the trained embeddings of the pseudo words
 
-    parser.add_argument("--dataset", type=str, default="coco_extension",
-                        choices=["coco", "coco_extension", "focus"])  # "road_sign"
+    parser.add_argument("--dataset", type=str, default="custom_coco",
+                        choices=["coco", "custom_coco", "focus"])
 
     parser.add_argument("--aug", nargs="+", type=str, default=["textual-inversion"],
                         choices=["real-guidance", "textual-inversion",

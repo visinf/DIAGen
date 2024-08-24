@@ -1,7 +1,6 @@
 from semantic_aug.datasets.coco import COCODataset
-from semantic_aug.datasets.coco_extension import COCOExtension
+from semantic_aug.datasets.custom_coco import CustomCOCO
 from semantic_aug.datasets.focus import FOCUS
-#from semantic_aug.datasets.road_sign import RoadSignDataset
 from models.filter_model import ClassificationFilterModel
 from torch.utils.data import DataLoader, WeightedRandomSampler
 
@@ -16,8 +15,7 @@ import torch.nn.functional as F
 
 DATASETS = {
     "coco": COCODataset,
-    "coco_extension": COCOExtension,
-    #"road_sign": RoadSignDataset,
+    "custom_coco": CustomCOCO,
     "focus": FOCUS,
 }
 

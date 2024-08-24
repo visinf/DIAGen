@@ -16,8 +16,7 @@ import torch.utils.checkpoint
 from torch.utils.data import Dataset
 
 from semantic_aug.datasets.coco import COCODataset
-#from semantic_aug.datasets.road_sign import RoadSignDataset
-from semantic_aug.datasets.coco_extension import COCOExtension
+from semantic_aug.datasets.custom_coco import CustomCOCO
 from semantic_aug.datasets.focus import FOCUS
 
 import datasets
@@ -33,7 +32,6 @@ from diffusers.utils import check_min_version
 from diffusers.utils.import_utils import is_xformers_available
 from huggingface_hub import HfFolder, Repository, whoami
 
-# TODO: remove and import from diffusers.utils when the new version of diffusers is released
 from packaging import version
 from PIL import Image
 from torchvision import transforms
@@ -42,8 +40,7 @@ from transformers import CLIPTextModel, CLIPTokenizer
 
 DATASETS = {
     "coco": COCODataset,
-    #"road_sign": RoadSignDataset,
-    "coco_extension": COCOExtension,
+    "custom_coco": CustomCOCO,
     "focus": FOCUS,
 }
 
@@ -260,7 +257,7 @@ def parse_args():
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
 
     parser.add_argument("--dataset", type=str, default="coco",
-                        choices=["coco", "coco_extension", "focus"])  # "road_sign"
+                        choices=["coco", "custom_coco", "focus"])
 
     parser.add_argument("--unet-ckpt", type=str, default=None)
 
@@ -801,7 +798,6 @@ if __name__ == "__main__":
 
             path = os.path.join(output_dir, "extracted", path, name, f"{idx}.png")
             os.makedirs(os.path.dirname(path), exist_ok=True)
-
             image.save(path)
 
         for class_name in train_dataset.class_names:

@@ -26,7 +26,7 @@ if __name__ == "__main__":
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     parser.add_argument("--input-path", type=str, default="./fine-tuned")
     parser.add_argument("--dataset", type=str, default="coco",
-                        choices=["coco", "coco_extension", "focus"])  # "road_sign"
+                        choices=["coco", "custom_coco", "focus"])
     parser.add_argument("--augment-embeddings", default=False, help="Whether to augment the embeddings")
     parser.add_argument("--std-deviation", nargs='+', type=float, default=[0.005, 0.01, 0.025], help="How much std-dev to use")
 

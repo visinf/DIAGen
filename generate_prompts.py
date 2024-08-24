@@ -7,9 +7,8 @@ from transformers import AutoTokenizer, pipeline
 import transformers
 import torch
 from semantic_aug.datasets.coco import COCODataset
-from semantic_aug.datasets.coco_extension import COCOExtension
+from semantic_aug.datasets.custom_coco import CustomCOCO
 from semantic_aug.datasets.focus import FOCUS
-# from semantic_aug.datasets.road_sign import RoadSignDataset
 from typing import Dict
 import os
 import csv
@@ -92,8 +91,7 @@ GPT_PROMP_TEMPLATE = [{"role": "user", "content": user_content_temp}]
 
 DATASETS = {
     "coco": COCODataset,
-    # "road_sign": RoadSignDataset,
-    "coco_extension": COCOExtension,
+    "custom_coco": CustomCOCO,
     "focus": FOCUS,
 }
 
@@ -376,7 +374,7 @@ if __name__ == '__main__':
                         choices=["meta-llama/Llama-2-7b-chat-hf", "meta-llama/Llama-2-13b-chat-hf", "gpt-3.5-turbo",
                                  "gpt-4-turbo", "gpt-4o"])
     parser.add_argument("--prompts-per-class", type=int, default=10)
-    parser.add_argument("--dataset", type=str, default="coco", choices=["coco", "coco_extension", "focus"])  # "road_sign"
+    parser.add_argument("--dataset", type=str, default="coco", choices=["coco", "custom_coco", "focus"])
     # --content is only active for llama models
     parser.add_argument("--content", type=str, default="setting_adjective",
                         choices=["setting", "adjective", "setting_adjective", "uncommonSetting"])
