@@ -358,9 +358,11 @@ def configure():
 if __name__ == '__main__':
 
     '''
-    example call from terminal:
+    Step 3:
+    Call this script to generate class-specific text prompts that describe each class in several diverse scenarios.
     
-    python generate_prompts.py --dataset "coco" --prompts-per-class 5 --content "setting_adjective"
+    example call from terminal:   
+    python generate_prompts.py --dataset "custom_coco" --model "meta-llama/Llama-2-7b-chat-hf" --prompts-per-class 10 --out-filename "custom_coco_llama.csv"
     '''
 
     # Load .env

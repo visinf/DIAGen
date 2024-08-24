@@ -468,14 +468,17 @@ class ClassificationModel(nn.Module):
 
 if __name__ == "__main__":
     '''
+    Step 4:
     This script executes the last steps of the pipeline (generating synthetic images and training the downstream classifier).
     To run this skript the fine-tuned embeddings are needed (execute step 1 and 2 to get tokens).
-    Also a weighting network (filter) needs to be trained if one should be used and prompts must be generated before.
     The classifier will be a fine-tuned version of classifier-backbone (resnet50) trained on a combination of real
     and synthetic data.
 
     Example call in terminal:
     python train_classifier.py --dataset "custom_coco" --synthetic-dir "intermediates/coco_ext_test/synthetic_class_concepts" --logdir "intermediates/coco_ext_test/logs" --iterations-per-epoch 200 --num-epochs 50 --batch-size 32 --num-synthetic 5 --num-trials 1 --examples-per-class 8 --embed-path "intermediates/coco_ext_test/custom_coco-tokens/custom_coco-0-2.pt" --aug "textual-inversion" --strength 0.5 --guidance-scale 7.5 --mask 0 --inverted 0 --use-generated-prompts 0
+    
+    python train_classifier.py --dataset "custom_coco" --examples-per-class 2 --seed 0 --strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 --use-generated-prompts 1 --prompt-path "prompts/custom_coco_llama.csv" --synthetic_filter "train" --method "DIAGen" --eval_on_test_set "test" --num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
+
     '''
 
     parser = argparse.ArgumentParser("Few-Shot Baseline")
@@ -535,6 +538,7 @@ if __name__ == "__main__":
     parser.add_argument("--aug", nargs="+", type=str, default=["textual-inversion"],
                         choices=["real-guidance", "textual-inversion",
                                  "multi-token-inversion"])
+    # We only use Textual Inversion
 
     parser.add_argument("--strength", nargs="+", type=float, default=None)
     # A StableDiffusionImg2ImgPipeline and StableDiffusionInpaintPipeline Parameter:
@@ -556,15 +560,13 @@ if __name__ == "__main__":
     # A Textual Inversion Parameter:
     #   Allows to invert the mask
     parser.add_argument("--probs", nargs="+", type=float, default=None)
-    # Has something to do with ComposeParallel or ComposeSequential
 
     parser.add_argument("--compose", type=str, default="parallel",
                         choices=["parallel", "sequential"])
-    # How to process the pipeline?
 
     parser.add_argument("--erasure-ckpt-path", type=str, default=None)
     # A Textual Inversion Parameter:
-    #   Allows to erasure model knowledge to prevent data leakage as described in the paper
+    #   Allows to erasure model knowledge to prevent data leakage as described in the DA-Fusion paper
     parser.add_argument("--use-randaugment", action="store_true")
     # Whether to use RandAugment or normal augmentation (rotation and flip)
     # RandAugment: Practical automated data augmentation with a reduced search space <https://arxiv.org/abs/1909.13719>
@@ -575,7 +577,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--tokens-per-class", type=int, default=4)
     # A Textual Inversion Parameter
-    #   Only used when --aug "multi-token-inversion" selected
+    #   Only used when --aug "multi-token-inversion" selected, we do not use it
 
     parser.add_argument("--synthetic_filter", type=str, default=None,
                         choices=["use", "train", None])
@@ -588,13 +590,15 @@ if __name__ == "__main__":
     # 'Good' value is 50000 and everything in the range of 30000 - 70000 works pretty well
 
     parser.add_argument("--device", type=int, default=0)
-
+    # On which GPU to run
     parser.add_argument("--save_model", type=bool, default=True)
     # Whether to save the best classifier model or not
     parser.add_argument("--eval_on_test_set", nargs="+", type=str, default=[])
     # On which datasets the best classifier model should be evaluated
+    # Custom coco has 2 choices: "test" and "test_uncommon"
     parser.add_argument("--method", type=str, default="baseline")
-    # String containing information about the used method, used as directory name
+    # String containing information about the current run, used as directory name.
+    # We use it to tag different methods for our ablation study
 
     args = parser.parse_args()
 

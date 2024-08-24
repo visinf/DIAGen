@@ -64,7 +64,7 @@ Executing `aggregate_embeddings.py` will save all learned embeddings as a tokens
 
 An example call could look like this:
 ```
-python aggregate_embeddings.py --seeds 0 --examples-per-class 2 --dataset "custom_coco" --augment-embeddings True --input-path "./fine-tuned" --embed-path "tokens/{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt"
+python aggregate_embeddings.py --seeds 0 --examples-per-class 2 --dataset "custom_coco" --augment-embeddings True
 ```
 
 ### 3. Generating Semantically Diverse Prompts (`generate_prompts.py`)
@@ -72,7 +72,7 @@ For our second contribution <ins>(b) class-specific prompts</ins>, the `generate
 
 An example call could look like this:
 ```
-python generate_prompts.py --dataset "custom_coco" --model "meta-llama/Llama-2-7b-chat-hf" --prompts-per-class 5
+python generate_prompts.py --dataset "custom_coco" --model "meta-llama/Llama-2-7b-chat-hf" --prompts-per-class 5 --out-filename "custom_coco_llama.csv"
 ```
 
 ### 4. Image Generation and Train Downstream Model (`train_classifier.py`)
@@ -80,7 +80,7 @@ The actual image generation process is combined with the training of the downstr
 
 An example call could look like this:
 ```
-python train_classifier.py --dataset "custom_coco" --examples-per-class 2 --strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 --use-generated-prompts 1 --prompt-path "prompts/focus/prompts_gpt4.csv" --synthetic_filter "train" --method "noise_llm_filter" --eval_on_test_set "test" --num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
+python train_classifier.py --dataset "custom_coco" --examples-per-class 2 --seed 0 --strength 0.7 --guidance-scale 15 --synthetic-probability 0.7 --use-embedding-noise 1 --use-generated-prompts 1 --prompt-path "prompts/custom_coco_llama.csv" --synthetic_filter "train" --method "DIAGen" --eval_on_test_set "test" --num-synthetic 10 --num-epochs 50 --iterations-per-epoch 200 --device 0
 ```
 
 ## Citation
