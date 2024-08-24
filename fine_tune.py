@@ -755,7 +755,7 @@ if __name__ == "__main__":
     (https://github.com/huggingface/diffusers/blob/main/examples/textual_inversion/textual_inversion.py)
     
     example call from terminal:
-    python fine_tune.py --dataset="focus" --output_dir=./ --pretrained_model_name_or_path="CompVis/stable-diffusion-v1-4" --resolution=512 --train_batch_size=4 --lr_warmup_steps=0 --gradient_accumulation_steps=1 --max_train_steps=999 --learning_rate=5.0e-04 --scale_lr --lr_scheduler="constant" --mixed_precision=fp16 --revision=fp16 --gradient_checkpointing --only_save_embeds --flip_p 0.5 --seeds 0 1 2 --examples-per-class 2 4 8 --device 0       
+    python fine_tune.py --dataset="custom_coco" --output_dir=./ --pretrained_model_name_or_path="CompVis/stable-diffusion-v1-4" --resolution=512 --train_batch_size=4 --lr_warmup_steps=0 --gradient_accumulation_steps=1 --max_train_steps=1000 --learning_rate=5.0e-04 --scale_lr --lr_scheduler="constant" --mixed_precision=fp16 --revision=fp16 --gradient_checkpointing --only_save_embeds --flip_p 0.5 --seeds 0 --examples-per-class 2 --device 0       
     '''
 
     args = parse_args()
