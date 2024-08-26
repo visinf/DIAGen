@@ -8,7 +8,7 @@ This is the official repository of our [paper](https://....):
 **DIAGen: Semantically Diverse Image Augmentation with Generative Models for Few-Shot Learning**<br>
 Tobias Lingenberg, Markus Reuter, Gopika Sudhakaran, Dominik Gojny, 
 [Stefan Roth](https://www.visinf.tu-darmstadt.de/visual_inference/people_vi/stefan_roth.en.jsp),
-[Simone Schaub-Meyer]((https://schaubsi.github.io/)
+[Simone Schaub-Meyer](https://schaubsi.github.io/)
 <br>
 *GCPR*, 2024
 
