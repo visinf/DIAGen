@@ -1,5 +1,17 @@
 # DIAGen: Semantically Diverse Image Augmentation with Generative Models for Few-Shot Learning (GCPR 2024)
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Framework](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?&logo=PyTorch&logoColor=white)](https://pytorch.org/)
+
+This is the official repository of our [paper](https://....):
+
+**DIAGen: Semantically Diverse Image Augmentation with Generative Models for Few-Shot Learning**<br>
+Tobias Lingenberg, Markus Reuter, Gopika Sudhakaran, Dominik Gojny, 
+[Stefan Roth](https://www.visinf.tu-darmstadt.de/visual_inference/people_vi/stefan_roth.en.jsp),
+[Simone Schaub-Meyer]((https://schaubsi.github.io/)
+<br>
+*GCPR*, 2024
+
 ![DIAGen Banner](assets/banner.png)
 
 ## Abstract
