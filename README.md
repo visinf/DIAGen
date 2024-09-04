@@ -102,6 +102,11 @@ python train_classifier.py --dataset "custom_coco" --examples-per-class 2 --seed
 If you find DIAGen helpful, please consider citing our work:
 
 ```
-OUR CITATION
+@article{lingenberg2024diagen,
+  title={DIAGen: Diverse Image Augmentation with Generative Models},
+  author={Lingenberg, Tobias and Reuter, Markus and Sudhakaran, Gopika and Gojny, Dominik and Roth, Stefan and Schaub-Meyer, Simone},
+  journal={arXiv preprint arXiv:2408.14584},
+  year={2024}
+}
 ```
 
