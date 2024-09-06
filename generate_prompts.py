@@ -374,7 +374,7 @@ if __name__ == '__main__':
     parser.add_argument("--out-filename", type=str, default="prompts.csv")
     parser.add_argument("--model", type=str, default="gpt-4o",
                         choices=["meta-llama/Llama-2-7b-chat-hf", "meta-llama/Llama-2-13b-chat-hf", "gpt-3.5-turbo",
-                                 "gpt-4-turbo", "gpt-4o"])
+                                 "gpt-4-turbo", "gpt-4o", "gpt-4o-mini"])
     parser.add_argument("--prompts-per-class", type=int, default=10)
     parser.add_argument("--dataset", type=str, default="coco", choices=["coco", "custom_coco", "focus"])
     # --content is only active for llama models
